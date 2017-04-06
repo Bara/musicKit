@@ -74,14 +74,17 @@ public void CSGOItems_OnItemsSynced()
 
 public void OnClientCookiesCached(int client)
 {
-	char sDefIndex[8];
-	GetClientCookie(client, g_hMusicKitCookie, sDefIndex, sizeof(sDefIndex));
-	
-	int iDefIndex = StringToInt(sDefIndex);
-	if(iDefIndex > 0)
+	if (IsClientValid(client))
 	{
-		g_iMusicKit[client] = iDefIndex;
-		SetEntProp(client, Prop_Send, "m_unMusicID", g_iMusicKit[client]); // Trigger ban
+		char sDefIndex[8];
+		GetClientCookie(client, g_hMusicKitCookie, sDefIndex, sizeof(sDefIndex));
+		
+		int iDefIndex = StringToInt(sDefIndex);
+		if(iDefIndex > 0)
+		{
+			g_iMusicKit[client] = iDefIndex;
+			SetEntProp(client, Prop_Send, "m_unMusicID", g_iMusicKit[client]); // Trigger ban
+		}
 	}
 }
 
