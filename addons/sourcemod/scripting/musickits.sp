@@ -255,12 +255,12 @@ void UpdateMusicKitConfig()
 			
 		bFound = kvConf.JumpToKey(sKey, false);
 		
-		kvConf.JumpToKey(sKey, true);
-		kvConf.SetString("name", sDisplayName);
-		kvConf.SetNum("defIndex", defIndex);
-			
 		if (!bFound)
 		{
+			kvConf.JumpToKey(sKey, true);
+			kvConf.SetString("name", sDisplayName);
+			kvConf.SetNum("defIndex", defIndex);
+			
 			LogMessage("Music Kit %s [%d] added!", sDisplayName, defIndex);
 		}
 		
