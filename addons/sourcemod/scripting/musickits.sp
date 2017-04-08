@@ -23,7 +23,7 @@ ConVar g_cShowDisableMusicKits = null;
 
 Handle g_hMusicKitCookie = null;
 
-char g_sMusicConfig[PLATFORM_MAX_PATH + 1] = "";
+char g_sConfig[PLATFORM_MAX_PATH + 1] = "";
 
 public Plugin myinfo = 
 {
@@ -36,7 +36,7 @@ public Plugin myinfo =
 
 public void OnPluginStart()
 {
-	BuildPath(Path_SM, g_sMusicConfig, sizeof(g_sMusicConfig), "configs/musickits.cfg");
+	BuildPath(Path_SM, g_sConfig, sizeof(g_sConfig), "configs/musickits.cfg");
 	
 	LoadTranslations("musickits.phrases");
 	
@@ -235,9 +235,9 @@ void UpdateMusicKitConfig()
 {
 	KeyValues kvConf = new KeyValues("MusicKits");
 	
-	if (!kvConf.ImportFromFile(g_sMusicConfig))
+	if (!kvConf.ImportFromFile(g_sConfig))
 	{
-		ThrowError("Can' find or read the file %s...", g_sMusicConfig);
+		ThrowError("Can' find or read the file %s...", g_sConfig);
 		return;
 	}
 	
@@ -251,14 +251,23 @@ void UpdateMusicKitConfig()
 		char sKey[MK_LENGTH];
 		IntToString(defIndex, sKey, sizeof(sKey));
 		
+		bool bFound = false;
+			
+		bFound = kvConf.JumpToKey(sKey, false);
+		
 		kvConf.JumpToKey(sKey, true);
 		kvConf.SetString("name", sDisplayName);
 		kvConf.SetNum("defIndex", defIndex);
+			
+		if (!bFound)
+		{
+			LogMessage("Music Kit %s [%d] added!", sDisplayName, defIndex);
+		}
 		
 		kvConf.Rewind();
 	}
 	
-	kvConf.ExportToFile(g_sMusicConfig);
+	kvConf.ExportToFile(g_sConfig);
 	delete kvConf;
 }
 
@@ -266,9 +275,9 @@ void GetMusicKitFlags(int defIndex, char[] flags, int size)
 {
 	KeyValues kvConf = new KeyValues("MusicKits");
 	
-	if (!kvConf.ImportFromFile(g_sMusicConfig))
+	if (!kvConf.ImportFromFile(g_sConfig))
 	{
-		ThrowError("Can' find or read the file %s...", g_sMusicConfig);
+		ThrowError("Can' find or read the file %s...", g_sConfig);
 		return;
 	}
 	
