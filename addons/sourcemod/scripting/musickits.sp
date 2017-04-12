@@ -194,6 +194,8 @@ void ShowMusicKitsMenu(int client)
 		menu.SetTitle("%T", "Choose a Music Kit", client);
 	}
 	
+	menu.AddItem("0", "No Kit");
+	
 	for (int i = 0; i <= CSGOItems_GetMusicKitCount(); i++)
 	{
 		int defIndex = CSGOItems_GetMusicKitDefIndexByMusicKitNum(i);
